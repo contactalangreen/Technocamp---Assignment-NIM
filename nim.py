@@ -66,7 +66,7 @@ o	If functions are used:
 
 
 # Global variables
-token_icon = "🔴"
+token_icon = "🪙"
 player1_name = ""
 player2_name = ""
 computer_name = "Computer"
@@ -75,15 +75,105 @@ play_against_computer = False
 
 
 def main():
-    welcome_message()
+    #welcome_message()
+    choose_opponent()
+    get_player_names()
 
 
-def get_player_names():
-    pass
+def welcome_message():
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S %p GMT")  # Get current date and time
+    greeting = "Good morning, mastermind!" if "AM" in current_time else "Good evening, strategist!"  # Determine greeting based on time
+    
+    print(
+        f"""🎉 NIM CHAMPION: Token Takedown Arena! 🪙 ⚡
 
+        {greeting}
+        {current_time}
+
+        ⚡ TOKEN RULES
+        1. Take at least 1 token from ONE pile only
+        2. You cannot empty a pile — unless it has exactly 1 token left
+        3. Snatch the last token → YOU WIN! 🏆
+        4. Every move counts… play bold, play smart! 🔥+🧠
+
+        🚀 Ready to dominate?
+        Let's ignite the showdown! 💥"""
+    )
 
 def choose_opponent():
-    pass
+    # === Print the Game Mode Selection ===
+    print(
+        f"""
+        🎮 CHOOSE YOUR BATTLE MODE! ⚔️ 🪙
+
+        🔥 Multiplayer (1): Duel a friend — head-to-head token chaos!
+        🤖 Singleplayer (2): Challenge the ultimate NIM Computer!
+
+        ⚡ Type 1 for Multiplayer or 2 for Singleplayer 💥
+        
+        """
+    )
+    try:
+        choice = int(input("Your choice (1 or 2): "))  # Get user input for game mode
+        while choice not in [1, 2]:  # Validate input
+            print("❌ Invalid choice. Please enter 1 or 2.")
+            choice = int(input("Your choice (1 or 2): "))  # Re-prompt for valid input
+    except ValueError:
+        print("❌ Invalid input. Please enter a number (1 or 2).\n")
+        choose_opponent()  # Restart function on invalid input
+        return 
+    global play_against_computer
+    if choice == 1:
+        play_against_computer = False
+    elif choice == 2:
+        play_against_computer = True
+    
+
+def get_player_names():
+    if play_against_computer == True:
+        while True:
+            try:
+                player1_name = input("Enter your first name, brave challenger: ").strip()
+                if not player1_name:
+                    raise ValueError("Player 1 name cannot be empty!")
+                if not player1_name.isalpha():
+                    raise ValueError("Only letters allowed for Player 1! No spaces or numbers.")
+
+                player1_name = player1_name.lower().capitalize()
+                player2_name = computer_name
+                print(f"{player1_name}, you are up against the {computer_name}! Let the game begin! 🤖🎉")
+                break
+            except ValueError as e:
+                print(f"Invalid input: {e}")
+                print("Please try again.\n")
+    
+    elif play_against_computer == False:
+        while True:
+            try:
+                player1_name = input("Enter Player 1's first name: ").strip()
+                if not player1_name:
+                    raise ValueError("Player 1 name cannot be empty!")
+                if not player1_name.isalpha():
+                    raise ValueError("Only letters allowed for Player 1! No spaces or numbers.")
+
+                player2_name = input("Enter Player 2's first name: ").strip()
+                if not player2_name:
+                    raise ValueError("Player 2 name cannot be empty!")
+                if not player2_name.isalpha():
+                    raise ValueError("Only letters allowed for Player 2! No spaces or numbers.")
+
+                player1_name = player1_name.lower().capitalize()
+                player2_name = player2_name.lower().capitalize()
+
+                print(f"\n{player1_name} vs {player2_name}! Let the game begin! 🎉\n")
+                break
+
+            except ValueError as e:
+                print(f"Invalid input: {e}")
+                print("Please try again.\n")
+
+
+    
 
 
 def get_number_of_piles():
@@ -117,25 +207,7 @@ def is_game_over(pile_sizes):
 def play_nim_game():
     pass
 
-def welcome_message():
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S %p GMT")  # Get current date and time
-    greeting = "Good morning, mastermind!" if "AM" in current_time else "Good evening, strategist!"  # Determine greeting based on time
-    
-    print(
-        f"""🎉 NIM CHAMPION: Token Takedown Arena! 🪙⚡
 
-        {greeting}
-        {current_time}
-
-        ⚡ TOKEN RULES
-        1. Take at least 1 token from ONE pile only
-        2. You cannot empty a pile — unless it has exactly 1 token left
-        3. Snatch the last token → YOU WIN! 🏆
-        4. Every move counts… play bold, play smart! 🔥+🧠
-
-        🚀 Ready to dominate?
-        Let's ignite the showdown! 💥"""
-    )
 
 if __name__ == "__main__":
     main()
@@ -301,8 +373,8 @@ ________________________________________
 Main Function Structure
 def main():
     # Welcome & setup
-    # Get player names
     # Choose opponent
+    # Get player names
     # Get number of piles
     # Get pile sizes
     # Play game (calls play_nim_game)
