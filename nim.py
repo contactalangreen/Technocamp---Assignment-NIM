@@ -1,3 +1,6 @@
+from random import choice, randint
+from datetime import datetime
+
 '''
 •  Part A: Displaying Two Token Piles [4 Marks]
 •	Prompt the user to input two numbers, each representing the number of tokens in one of two piles.
@@ -72,7 +75,7 @@ play_against_computer = False
 
 
 def main():
-    pass
+    welcome_message()
 
 
 def get_player_names():
@@ -114,9 +117,30 @@ def is_game_over(pile_sizes):
 def play_nim_game():
     pass
 
+def welcome_message():
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S %p GMT")  # Get current date and time
+    greeting = "Good morning, mastermind!" if "AM" in current_time else "Good evening, strategist!"  # Determine greeting based on time
+    
+    print(
+        f"""🎉 NIM CHAMPION: Token Takedown Arena! 🪙⚡
+
+        {greeting}
+        {current_time}
+
+        ⚡ TOKEN RULES
+        1. Take at least 1 token from ONE pile only
+        2. You cannot empty a pile — unless it has exactly 1 token left
+        3. Snatch the last token → YOU WIN! 🏆
+        4. Every move counts… play bold, play smart! 🔥+🧠
+
+        🚀 Ready to dominate?
+        Let's ignite the showdown! 💥"""
+    )
 
 if __name__ == "__main__":
     main()
+
+
 
 
 '''Program Characteristics 
