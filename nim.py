@@ -209,15 +209,39 @@ def display_piles(pile_sizes):
 
 
 def get_player_move(player_name, pile_sizes):
-    pass
+    print(f"\n{player_name}, it's your turn!")
+    while True:
+        try:
+            pile_index = int(input(f"Choose a pile to remove tokens from (1-{len(pile_sizes)}): ")) - 1
+            if pile_index < 0 or pile_index >= len(pile_sizes):
+                print(f"❌ Invalid pile number. Please choose a pile between 1 and {len(pile_sizes)}.")
+                continue
+            if pile_sizes[pile_index] == 0:
+                print("❌ That pile is empty. Please choose a non-empty pile.")
+                continue
+
+            amount = int(input(f"How many tokens do you want to remove from Pile {pile_index + 1} (1-{pile_sizes[pile_index]}): "))
+            if amount < 1 or amount > pile_sizes[pile_index]:
+                print(f"❌ Invalid amount. You can remove between 1 and {pile_sizes[pile_index]} tokens from this pile.")
+                continue
+
+            return pile_index, amount  # Return valid move
+
+        except ValueError:
+            print("❌ Invalid input. Please enter valid integers for pile number and amount.")
 
 
 def get_computer_move(pile_sizes):
-    pass
+    non_empty_piles = [i for i, size in enumerate(pile_sizes) if size > 0]  # Get indices of non-empty piles
+    pile_index = choice(non_empty_piles)  # Randomly choose a non-empty pile
+    amount = randint(1, pile_sizes[pile_index])  # Randomly choose a valid amount to remove
+    print(f"\n{COMPUTER_NAME} chooses Pile {pile_index + 1} and removes {amount} tokens.")
+    return pile_index, amount
 
 
 def make_move(pile_sizes, pile_index, amount):
-    pass
+    pile_sizes[pile_index] -= amount  # Subtract the amount from the chosen pile
+    
 
 
 def is_game_over(pile_sizes):
@@ -225,6 +249,22 @@ def is_game_over(pile_sizes):
 
 
 def play_nim_game():
+
+    """
+    player_turn = randint(1, 2)  # Randomly decide who goes first
+
+    if play_against_computer == True:
+        if player_turn == 1:
+            player_name = player1_name
+            other_player = COMPUTER_NAME
+            print(f"{player_name} will go first against the {COMPUTER_NAME}!\n")
+            chosen_pile = int(input(f"{player_name}, choose a pile (1-{len(pile_sizes)}): ")) - 1
+        if player_turn == 2:
+            player_name = COMPUTER_NAME
+            other_player = player1_name
+            print(f"The {COMPUTER_NAME} will go first against {other_player}!\n")
+            chosen_pile = randint(0, len(pile_sizes) - 1)
+    """
     pass
 
 def main():
