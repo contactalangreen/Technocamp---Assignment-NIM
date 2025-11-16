@@ -66,10 +66,10 @@ o	If functions are used:
 
 
 # Global variables
-token_icon = "🪙"
+TOKEN_ICON = "🪙"
 player1_name = ""
 player2_name = ""
-computer_name = "Computer"
+COMPUTER_NAME = "Computer"
 num_piles = 0
 pile_sizes = []
 play_against_computer = False
@@ -135,8 +135,8 @@ def get_player_names():
                     raise ValueError("Only letters allowed for Player 1! No spaces or numbers.")
 
                 player1_name = player1_name.lower().capitalize()
-                player2_name = computer_name
-                print(f"{player1_name}, you are up against the {computer_name}! Let the game begin! 🤖🎉")
+                player2_name = COMPUTER_NAME
+                print(f"{player1_name}, you are up against the {COMPUTER_NAME}! Let the game begin! 🤖🎉")
                 break
             except ValueError as e:
                 print(f"Invalid input: {e}")
@@ -204,7 +204,7 @@ def get_all_pile_sizes(num_piles):
 
 def display_piles(pile_sizes):
     for index, size in enumerate(pile_sizes):
-        pile_display = (token_icon + " ") * size  # Create a string of token icons based on pile size
+        pile_display = (TOKEN_ICON + " ") * size  # Create a string of token icons based on pile size
         print(f"Pile {index + 1}: {pile_display} ({size} tokens)")  # Display pile number and its tokens
 
 
@@ -286,7 +286,7 @@ Part A: Displaying Two Token Piles
 Variables (local unless noted)
 •	pile1_size → int (local)
 •	pile2_size → int (local)
-•	token_icon → str (global – reused across parts)
+•	TOKEN_ICON → str (global – reused across parts)
 •	piles → list[int] (local, but will become global in later parts)
 Functions
 •	get_two_pile_sizes() → returns (pile1_size, pile2_size)
@@ -334,7 +334,7 @@ ________________________________________
 Part C: Two Pile Nim – Player vs Computer
 Variables (local unless noted)
 •	play_against_computer → bool (local, from user choice)
-•	computer_name → str = "Computer" (global)
+•	COMPUTER_NAME → str = "Computer" (global)
 •	computer_move → tuple (pile_index, amount) (local)
 Functions
 •	choose_opponent() → returns bool (True = vs computer)
@@ -354,7 +354,7 @@ Part D: Any Number of Piles Nim
 Variables (local unless noted)
 •	num_piles → int (local)
 •	pile_sizes → list[int] (global – central game state)
-•	player1_name, player2_name, computer_name → str (global)
+•	player1_name, player2_name, COMPUTER_NAME → str (global)
 •	play_against_computer → bool (global – affects turn logic)
 •	current_player_index → int (local, 0 or 1)
 •	last_mover → str (local, tracks who took last token)
@@ -389,8 +389,8 @@ ________________________________________
 
 Global vs Local Summary (in parentheses)
 •	Global:
-o	token_icon (str) – used in all display functions
-o	player1_name, player2_name, computer_name (str) – set once, used everywhere
+o	TOKEN_ICON (str) – used in all display functions
+o	player1_name, player2_name, COMPUTER_NAME (str) – set once, used everywhere
 o	pile_sizes (list[int]) – central mutable game state (passed by reference)
 o	play_against_computer (bool) – set once, controls game flow
 •	Local:
