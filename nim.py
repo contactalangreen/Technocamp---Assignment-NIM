@@ -1,6 +1,3 @@
-from random import choice, randint
-from datetime import datetime
-
 '''
 •  Part A: Displaying Two Token Piles [4 Marks]
 •	Prompt the user to input two numbers, each representing the number of tokens in one of two piles.
@@ -65,8 +62,11 @@ o	If functions are used:
 '''
 
 
+from random import choice, randint
+from datetime import datetime
+
 # Global variables
-TOKEN_ICON = "🪙"
+TOKEN_ICON = "COIN"
 player1_name = ""
 player2_name = ""
 COMPUTER_NAME = "Computer"
@@ -76,115 +76,94 @@ play_against_computer = False
 
 
 def welcome_message():
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S %p GMT")  # Get current date and time
-    greeting = "Good morning, mastermind!" if "AM" in current_time else "Good evening, strategist!"  # Determine greeting based on time
-    
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S %p GMT")
+    greeting = "Good morning, mastermind!" if "AM" in current_time else "Good evening, strategist!"
+
     print(
-        f"""🎉 NIM CHAMPION: Token Takedown Arena! 🪙 ⚡
+        f"""NIM CHAMPION: Token Takedown Arena! COIN
 
         {greeting}
         {current_time}
 
-        ⚡ TOKEN RULES
+        TOKEN RULES
         1. Take at least 1 token from ONE pile only
         2. You cannot empty a pile — unless it has exactly 1 token left
-        3. Snatch the last token → YOU WIN! 🏆
-        4. Every move counts… play bold, play smart! 🔥+🧠
+        3. Snatch the last token → YOU WIN!
+        4. Every move counts… play bold, play smart!
 
-        🚀 Ready to dominate?
-        Let's ignite the showdown! 💥"""
+        Ready to dominate?
+        Let's ignite the showdown!"""
     )
+
 
 def choose_opponent():
-    # === Print the Game Mode Selection ===
     print(
         f"""
-        🎮 CHOOSE YOUR BATTLE MODE! ⚔️ 🪙
+        CHOOSE YOUR BATTLE MODE!
 
-        🔥 Multiplayer (1): Duel a friend — head-to-head token chaos!
-        🤖 Singleplayer (2): Challenge the ultimate NIM Computer!
+        Multiplayer (1): Duel a friend — head-to-head token chaos!
+        Singleplayer (2): Challenge the ultimate NIM Computer!
 
-        ⚡ Type 1 for Multiplayer or 2 for Singleplayer 💥
-        
-        """
+        Type 1 for Multiplayer or 2 for Singleplayer"""
     )
     try:
-        choice = int(input("Your choice (1 or 2): "))  # Get user input for game mode
-        while choice not in [1, 2]:  # Validate input
-            print("❌ Invalid choice. Please enter 1 or 2.")
-            choice = int(input("Your choice (1 or 2): "))  # Re-prompt for valid input
+        choice = int(input("Your choice (1 or 2): "))
+        while choice not in [1, 2]:
+            print("Invalid choice. Please enter 1 or 2.")
+            choice = int(input("Your choice (1 or 2): "))
     except ValueError:
-        print("❌ Invalid input. Please enter a number (1 or 2).\n")
-        choose_opponent()  # Restart function on invalid input
-        return 
+        print("Invalid input. Please enter a number (1 or 2).\n")
+        choose_opponent()
+        return
     global play_against_computer
-    if choice == 1:
-        play_against_computer = False
-    elif choice == 2:
-        play_against_computer = True
-    
+    play_against_computer = choice == 2
+
 
 def get_player_names():
-    if play_against_computer == True:
+    global player1_name, player2_name
+    if play_against_computer:
         while True:
             try:
                 player1_name = input("Enter your first name, brave challenger: ").strip()
-                if not player1_name:
-                    raise ValueError("Player 1 name cannot be empty!")
-                if not player1_name.isalpha():
-                    raise ValueError("Only letters allowed for Player 1! No spaces or numbers.")
-
+                if not player1_name or not player1_name.isalpha():
+                    raise ValueError("Name must contain only letters and cannot be empty.")
                 player1_name = player1_name.lower().capitalize()
                 player2_name = COMPUTER_NAME
-                print(f"{player1_name}, you are up against the {COMPUTER_NAME}! Let the game begin! 🤖🎉")
+                print(f"{player1_name}, you are up against the {COMPUTER_NAME}! Let the game begin!")
                 break
             except ValueError as e:
-                print(f"Invalid input: {e}")
-                print("Please try again.\n")
-    
-    elif play_against_computer == False:
+                print(f"Invalid input: {e}\nPlease try again.\n")
+    else:
         while True:
             try:
                 player1_name = input("Enter Player 1's first name: ").strip()
-                if not player1_name:
-                    raise ValueError("Player 1 name cannot be empty!")
-                if not player1_name.isalpha():
-                    raise ValueError("Only letters allowed for Player 1! No spaces or numbers.")
+                if not player1_name or not player1_name.isalpha():
+                    raise ValueError("Player 1 name must contain only letters and cannot be empty.")
 
                 player2_name = input("Enter Player 2's first name: ").strip()
-                if not player2_name:
-                    raise ValueError("Player 2 name cannot be empty!")
-                if not player2_name.isalpha():
-                    raise ValueError("Only letters allowed for Player 2! No spaces or numbers.")
+                if not player2_name or not player2_name.isalpha():
+                    raise ValueError("Player 2 name must contain only letters and cannot be empty.")
 
                 player1_name = player1_name.lower().capitalize()
                 player2_name = player2_name.lower().capitalize()
-
-                print(f"\n{player1_name} vs {player2_name}! Let the game begin! 🎉\n")
+                print(f"\n{player1_name} vs {player2_name}! Let the game begin!\n")
                 break
-
             except ValueError as e:
-                print(f"Invalid input: {e}")
-                print("Please try again.\n")
-
-
-    
+                print(f"Invalid input: {e}\nPlease try again.\n")
 
 
 def get_number_of_piles():
     global num_piles
-    #Any number is too much and 2 only is limiting the user. Therefore letting them pick from 5 is enough for a relative fast game.
     while True:
         try:
-            num_piles = int(input("Enter the number of piles you want to play with (Between 1 and 5): "))
-            if num_piles < 1 or num_piles > 5:
-                print("❌ Invalid input. Please enter a number between 1 and 5.\n")
-                continue
-            break
+            num_piles = int(input("Enter the number of piles (1–5): "))
+            if 1 <= num_piles <= 5:
+                break
+            print("Please enter a number between 1 and 5.")
         except ValueError:
-            print("❌ Invalid input. Please enter a valid integer between 1 and 5.\n")
-    
+            print("Please enter a valid integer.")
     return num_piles
+
 
 def get_all_pile_sizes(num_piles):
     global pile_sizes
@@ -192,124 +171,115 @@ def get_all_pile_sizes(num_piles):
     for i in range(num_piles):
         while True:
             try:
-                pile_size = int(input(f"Enter how many tokens in pile {i + 1} you want between 1 and 10: "))
-                if pile_size < 0 or pile_size > 10:
-                    print("❌ Invalid input. Please enter a non-negative integer between 1 and 10.\n")
-                    continue
-                pile_sizes.append(pile_size)
-                break
+                size = int(input(f"Enter tokens in pile {i+1} (1–10): "))
+                if 1 <= size <= 10:
+                    pile_sizes.append(size)
+                    break
+                print("Please enter a number between 1 and 10.")
             except ValueError:
-                print("❌ Invalid input. Please enter a valid integer between 1 and 10.\n")
+                print("Please enter a valid integer.")
     return pile_sizes
+
 
 def display_piles(pile_sizes):
     for index, size in enumerate(pile_sizes):
-        pile_display = (TOKEN_ICON + " ") * size  # Create a string of token icons based on pile size
-        print(f"Pile {index + 1}: {pile_display} ({size} tokens)")  # Display pile number and its tokens
+        # Force non-negative display
+        display_size = max(0, size)
+        tokens = (TOKEN_ICON + " ") * display_size
+        print(f"Pile {index + 1}: {tokens} ({display_size} tokens)")
 
 
 def get_player_move(player_name, pile_sizes):
     print(f"\n{player_name}, it's your turn!")
     while True:
         try:
-            pile_input = input(f"Choose a pile to remove tokens from (1-{len(pile_sizes)}): ").strip()
+            pile_input = input(f"Choose a pile (1-{len(pile_sizes)}): ").strip()
             pile_index = int(pile_input) - 1
-            
-            if pile_index < 0 or pile_index >= len(pile_sizes):
-                print(f"❌ Invalid pile number. Please choose a pile between 1 and {len(pile_sizes)}.")
+
+            if not (0 <= pile_index < len(pile_sizes)):
+                print(f"Please choose a pile between 1 and {len(pile_sizes)}.")
                 continue
 
-            current_pile_size = pile_sizes[pile_index]
-            if current_pile_size == 0:
-                print("❌ That pile is empty. Please choose a non-empty pile.")
+            current = pile_sizes[pile_index]
+            if current <= 0:
+                print("That pile is empty. Choose another.")
                 continue
 
-            if current_pile_size == 1:
-                max_allowed = 1
-                prompt = f"How many tokens do you want to remove from Pile {pile_index + 1} (1 only): "
+            if current == 1:
+                amount = 1
+                print(f"You must take the last token from Pile {pile_index + 1}.")
             else:
-                max_allowed = current_pile_size - 1
-                prompt = f"How many tokens do you want to remove from Pile {pile_index + 1} (1-{max_allowed}): "
-            
-            amount_input = input(prompt).strip()
-            amount = int(amount_input)
-
-            if amount < 1:
-                print("❌ You must remove at least 1 token.")
-                continue
-
-            if current_pile_size == 1:
-                if amount != 1:
-                    print("❌ You can only remove 1 token from this pile.")
-                    continue
-            
-            else:
-                if amount > current_pile_size - 1:
-                    print(f"❌ Invalid amount. You can remove between 1 and {current_pile_size - 1} tokens from this pile.")
+                max_allowed = current - 1
+                amount_input = input(f"How many tokens from Pile {pile_index + 1} (1–{max_allowed}): ").strip()
+                amount = int(amount_input)
+                if amount < 1 or amount > max_allowed:
+                    print(f"Please enter a number between 1 and {max_allowed}.")
                     continue
 
-            
-            print(f"✅ {player_name} removes {amount} token(s) from Pile {pile_index + 1}.")
-            pile_sizes[pile_index] -= amount  # Update pile size immediately after valid move
-            return pile_index, amount  # Return valid move
+            # Apply move safely
+            pile_sizes[pile_index] -= amount
+            # Ensure no negative values (defensive)
+            if pile_sizes[pile_index] < 0:
+                pile_sizes[pile_index] = 0
+
+            print(f"{player_name} removes {amount} token(s) from Pile {pile_index + 1}.")
+            return pile_index, amount
 
         except ValueError:
-            print("❌ Invalid input. Please enter valid integers for pile number and amount.")
+            print("Invalid input. Please enter numbers only.")
+
 
 def get_computer_move(pile_sizes):
-    non_empty_piles = [i for i, size in enumerate(pile_sizes) if size > 0]  # Get indices of non-empty piles
-    pile_index = choice(non_empty_piles)  # Randomly choose a non-empty pile
+    non_empty = [i for i, s in enumerate(pile_sizes) if s > 0]
+    pile_index = choice(non_empty)
+    current = pile_sizes[pile_index]
 
-    pile_size = pile_sizes[pile_index]
-    if pile_size == 1:
-        amount = 1  # Can take the last one
+    if current == 1:
+        amount = 1
     else:
-        amount = randint(1, pile_size - 1)  # ← -1 HERE!
+        amount = randint(1, current - 1)  # Never empty unless last token
 
-    print(f"\n{COMPUTER_NAME} chooses Pile {pile_index + 1} and removes {amount} tokens.")
+    pile_sizes[pile_index] -= amount
+    if pile_sizes[pile_index] < 0:
+        pile_sizes[pile_index] = 0  # Safety
+
+    print(f"\n{COMPUTER_NAME} chooses Pile {pile_index + 1} and removes {amount} token(s).")
     return pile_index, amount
 
 
-def make_move(pile_sizes, pile_index, amount):
-    pile_sizes[pile_index] -= amount  # Subtract the amount from the chosen pile
-
-
-
 def is_game_over(pile_sizes):
-    return all(size == 0 for size in pile_sizes)  # Check if all piles are empty
-
+    return all(s <= 0 for s in pile_sizes)
 
 
 def play_nim_game(pile_sizes, player1_name, player2_name, play_against_computer):
     last_mover = None
-    current_player_index = 0  # 0 for player1, 1 for player2/computer
-    
+    turn = 0  # 0: player1, 1: player2/computer
+
     while not is_game_over(pile_sizes):
-        display_piles(pile_sizes)  # Display current state of piles
+        display_piles(pile_sizes)
 
-        if play_against_computer and current_player_index == 1:
+        if play_against_computer and turn == 1:
             player_name = COMPUTER_NAME
-            pile_index, amount = get_computer_move(pile_sizes)
+            get_computer_move(pile_sizes)
         else:
-            player_name = player1_name if current_player_index == 0 else player2_name
-            pile_index, amount = get_player_move(player_name, pile_sizes)
+            player_name = player1_name if turn == 0 else player2_name
+            get_player_move(player_name, pile_sizes)
 
-        make_move(pile_sizes, pile_index, amount)  # Update pile sizes
-        last_mover = player_name  # Track who made the last move
+        last_mover = player_name
+        turn = 1 - turn
 
-        current_player_index = 1 - current_player_index  # Switch players
+    display_piles(pile_sizes)
+    print(f"\nGame Over! {last_mover} takes the last token and wins! Congratulations!")
 
-    display_piles(pile_sizes)  # Final display of piles    
-    print(f"\n🎉 Game Over! {last_mover} takes the last token and wins! 🏆 Congratulations! 🎉")
 
 def main():
-    
     welcome_message()
     choose_opponent()
     get_player_names()
     get_number_of_piles()
     get_all_pile_sizes(num_piles)
     play_nim_game(pile_sizes, player1_name, player2_name, play_against_computer)
+
 
 if __name__ == "__main__":
     main()
