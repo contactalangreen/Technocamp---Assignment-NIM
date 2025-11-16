@@ -70,14 +70,9 @@ token_icon = "🪙"
 player1_name = ""
 player2_name = ""
 computer_name = "Computer"
+num_piles = 0
 pile_sizes = []
 play_against_computer = False
-
-
-def main():
-    #welcome_message()
-    choose_opponent()
-    get_player_names()
 
 
 def welcome_message():
@@ -177,15 +172,40 @@ def get_player_names():
 
 
 def get_number_of_piles():
-    pass
-
+    global num_piles
+    #Any number is too much and 2 only is limiting the user. Therefore letting them pick from 5 is enough for a relative fast game.
+    while True:
+        try:
+            num_piles = int(input("Enter the number of piles you want to play with (Between 1 and 5): "))
+            if num_piles < 1 or num_piles > 5:
+                print("❌ Invalid input. Please enter a number between 1 and 5.\n")
+                continue
+            break
+        except ValueError:
+            print("❌ Invalid input. Please enter a valid integer between 1 and 5.\n")
+    
+    return num_piles
 
 def get_all_pile_sizes(num_piles):
-    pass
-
+    global pile_sizes
+    pile_sizes = []
+    for i in range(num_piles):
+        while True:
+            try:
+                pile_size = int(input(f"Enter how many tokens in pile {i + 1} you want between 1 and 10: "))
+                if pile_size < 0 or pile_size > 10:
+                    print("❌ Invalid input. Please enter a non-negative integer between 1 and 10.\n")
+                    continue
+                pile_sizes.append(pile_size)
+                break
+            except ValueError:
+                print("❌ Invalid input. Please enter a valid integer between 1 and 10.\n")
+    return pile_sizes
 
 def display_piles(pile_sizes):
-    pass
+    for index, size in enumerate(pile_sizes):
+        pile_display = (token_icon + " ") * size  # Create a string of token icons based on pile size
+        print(f"Pile {index + 1}: {pile_display} ({size} tokens)")  # Display pile number and its tokens
 
 
 def get_player_move(player_name, pile_sizes):
@@ -207,7 +227,14 @@ def is_game_over(pile_sizes):
 def play_nim_game():
     pass
 
-
+def main():
+    pass
+    #welcome_message()
+    #choose_opponent()
+    #get_player_names()
+    get_number_of_piles()
+    get_all_pile_sizes(num_piles)
+    display_piles(pile_sizes)
 
 if __name__ == "__main__":
     main()
